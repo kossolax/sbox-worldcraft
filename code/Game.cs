@@ -9,6 +9,9 @@ namespace WorldCraft
 		public static Game Current { get; protected set; }
 		public Hud Hud { get; private set; }
 
+		[ConVar.ClientData( "grid_size" )]
+		public static float GridSize { get; set; } = 16.0f;
+
 		public Game()
 		{
 			Current = this;
