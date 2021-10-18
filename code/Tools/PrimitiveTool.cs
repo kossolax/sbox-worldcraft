@@ -69,6 +69,7 @@ namespace WorldCraft
 
 			if ( Input.Down( InputButton.Attack1 ) )
 			{
+				Sound.FromScreen( "start" );
 				State = StateEnum.Drag;
 			}
 		}
@@ -88,12 +89,14 @@ namespace WorldCraft
 			// Sanity check
 			if ( Start.IsNearlyEqual( End ) )
 			{
+				Sound.FromScreen( "fail" );
 				State = StateEnum.Select;
 				return;
 			}
 
 			ExtrudeLine = new Line( End - Plane.Normal * 10000, End + Plane.Normal * 10000 );
 
+			Sound.FromScreen( "stage" );
 			State = StateEnum.Extrude;
 		}
 
@@ -105,6 +108,7 @@ namespace WorldCraft
 
 			if ( Input.Down( InputButton.Attack1 ) )
 			{
+				Sound.FromScreen( "finish" );
 				State = StateEnum.Select;
 				FinalizeBuild();
 			}
@@ -144,6 +148,7 @@ namespace WorldCraft
 			entity.Position = position;
 
 			var primitive = new PrimitiveBox();
+			primitive.Origin = position;
 			primitive.Size = size;
 			primitive.Entity = entity; // Circular dependency bad
 
