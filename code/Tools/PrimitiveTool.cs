@@ -19,8 +19,20 @@ namespace WorldCraft
 		public Plane Plane;
 		public Line ExtrudeLine;
 
+		Grid Grid;
+
+		~PrimitiveTool()
+		{
+			// shit
+			Grid?.Delete();
+		}
+
 		public override void FrameSimulate( Client cl )
 		{
+			// todo: need to delete grid when tool is deactivated
+			if ( !Grid.IsValid() )
+				Grid = new Grid();
+
 			switch ( State )
 			{
 				case StateEnum.Select:
@@ -40,10 +52,18 @@ namespace WorldCraft
 			var trace = Trace.Ray( Input.Cursor, 5000.0f ).Run();
 			if ( !trace.Hit ) return;
 
+			if ( Grid.IsValid() )
+			{
+				Grid.Position = trace.EndPos.SnapToGrid( Game.GridSize ) + trace.Normal * 0.05f;
+				Grid.Rotation = Rotation.From( 0, 0, 0 );
+				Grid.Origin = trace.EndPos.SnapToGrid( Game.GridSize );
+				Grid.Normal = trace.Normal;
+			}
+
 			Start = trace.EndPos.SnapToGrid( Game.GridSize );
 			End = Start;
 
-			DebugOverlay.Sphere( Start, 4, Color.Blue );
+			DebugOverlay.Sphere( Start, 2, Color.Blue );
 
 			Plane = new Plane( Start, trace.Normal );
 
