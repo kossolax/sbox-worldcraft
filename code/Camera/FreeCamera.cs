@@ -1,4 +1,6 @@
 ﻿using Sandbox;
+using System;
+using System.Linq;
 
 namespace WorldCraft
 {
@@ -14,6 +16,15 @@ namespace WorldCraft
 			Rot = Rotation.From( LookAngles );
 			FieldOfView = 80;
 			Viewer = Local.Pawn;
+
+			if ( Input.Down( InputButton.Jump ) )
+			{
+				var editorPawn = Local.Pawn as EditorPawn;
+				if( editorPawn.CurrentTool is SelectionTool selection && selection.SelectedEntity != null )
+				{
+					Focus( selection.SelectedEntity );
+				}
+			}
 		}
 
 		public override void BuildInput( InputBuilder input )
@@ -37,5 +48,17 @@ namespace WorldCraft
 			// input.ClearButtons();
 			input.StopProcessing = true;
 		}
+
+		public void Focus(PrimitiveEntity primitive)
+		{
+			var bb = primitive.WorldSpaceBounds;
+			var focusDist = 2.0f;
+			var maxSize = new[] { bb.Size.x, bb.Size.y, bb.Size.z }.Max();
+			var cameraView = 2.0f * (float)Math.Tan( 0.5f * 0.017453292f * FieldOfView );
+			var distance = focusDist * maxSize / cameraView; 
+			distance += 0.5f * maxSize;
+			Pos = bb.Center - distance * Rot.Forward;
+		}
+
 	}
 }
