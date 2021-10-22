@@ -19,5 +19,18 @@ namespace WorldCraft
 				previousTool = UserToolCurrent;
 			}
 		}
+
+		[Event.Hotload]
+		private void OnHotload()
+		{
+			if ( IsClient )
+			{
+				// problem here.. on hotload ConVar.ClientData gets reset on server
+				// but stays the same on client, doing this to remind the server
+				UserToolCurrent = "junk"; 
+				UserToolCurrent = previousTool;
+			}
+		}
+
 	}
 }
