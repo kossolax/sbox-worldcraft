@@ -1,4 +1,6 @@
 ﻿using Sandbox;
+using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace WorldCraft
 {
@@ -32,5 +34,17 @@ namespace WorldCraft
 				DebugOverlay.Axis( SelectedEntity.Position, SelectedEntity.Rotation, 16, depthTest: false );
 			}
 		}
+
+		public override void BuildOptionsSheet( Panel panel )
+		{
+			base.BuildOptionsSheet( panel );
+
+			panel.Add.Label( "Select Mode", "heading" );
+			panel.Add.Button( "object", "active" );
+			//panel.Add.Button( "Vertex" );
+			//panel.Add.Button( "Face" );
+			//panel.Add.Button( "Edge" );
+		}
+
 	}
 }

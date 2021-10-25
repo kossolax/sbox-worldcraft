@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using Sandbox.UI;
 
 namespace WorldCraft
 {
@@ -6,5 +7,6 @@ namespace WorldCraft
 	{
 		public virtual void Simulate( Client cl ) { }
 		public virtual void FrameSimulate( Client cl ) { }
+		public virtual void BuildOptionsSheet( Panel panel ) { }
 	}
 }

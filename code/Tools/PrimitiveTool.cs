@@ -1,4 +1,6 @@
 ﻿using Sandbox;
+using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace WorldCraft
 {
@@ -45,6 +47,14 @@ namespace WorldCraft
 					Extrude();
 					break;
 			}
+		}
+
+		public override void BuildOptionsSheet( Panel panel )
+		{
+			base.BuildOptionsSheet( panel );
+
+			panel.Add.Label( "Primitive Type", "heading" );
+			panel.Add.Button( "box", "active" );
 		}
 
 		void Select()
