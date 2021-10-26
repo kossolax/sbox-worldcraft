@@ -36,7 +36,7 @@ namespace WorldCraft
 			for ( int i = 0; i <= tesselation; i++ )
 			{
 				var normal = GetCircleVector( i, tesselation );
-				var texCoord = new Vector2();
+				var texCoord = new Vector2((float)i / (float)tesselation, 0.0f);
 
 				var pos = normal * radius + Vector3.Up * height;
 				GetUvs( normal, out Vector3 u, out Vector3 v );
@@ -50,6 +50,7 @@ namespace WorldCraft
 				} );
 
 				pos = normal * radius + Vector3.Down * height;
+				texCoord.y = 1.0f;
 				verts.Add( new SimpleVertex()
 				{
 					normal = normal,
