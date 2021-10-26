@@ -6,9 +6,6 @@ namespace WorldCraft
 {
 	public partial class PrimitiveBox : BasePrimitive
 	{
-		[Net] public Vector3 Origin { get; set; }
-		[Net, Change( nameof( DirtyEntity ) )] public Vector3 Size { get; set; }
-
 		public override Model BuildModel()
 		{
 			var mesh = new Mesh( Material.Load( "materials/dev/reflectivity_30.vmat" ) );
@@ -20,15 +17,6 @@ namespace WorldCraft
 				.Create();
 
 			return model;
-		}
-
-		private static Vector2 Planar( Vector3 pos, Vector3 uAxis, Vector3 vAxis )
-		{
-			return new Vector2()
-			{
-				x = Vector3.Dot( uAxis, pos ),
-				y = Vector3.Dot( vAxis, pos )
-			};
 		}
 
 		public override void BuildMesh( Mesh mesh )

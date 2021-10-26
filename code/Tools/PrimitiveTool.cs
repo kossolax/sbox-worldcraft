@@ -1,6 +1,7 @@
 ﻿using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
 
 namespace WorldCraft
 {
@@ -14,6 +15,12 @@ namespace WorldCraft
 			Extrude
 		};
 
+		public enum PrimitiveType
+		{
+			Box,
+			Cylinder
+		}
+
 		public StateEnum State = StateEnum.Select;
 
 		public Vector3 Start;
@@ -22,6 +29,9 @@ namespace WorldCraft
 		public Line ExtrudeLine;
 
 		Grid Grid;
+
+		static PrimitiveType SelectedType = PrimitiveType.Box;
+		static Panel SelectedTypeBtn;
 
 		~PrimitiveTool()
 		{
@@ -54,7 +64,25 @@ namespace WorldCraft
 			base.BuildOptionsSheet( panel );
 
 			panel.Add.Label( "Primitive Type", "heading" );
-			panel.Add.Button( "box", "active" );
+
+			// todo : wrap up active button state somewhere nice?
+			foreach(PrimitiveType t in Enum.GetValues(typeof(PrimitiveType)))
+			{
+				var btn = panel.Add.Button( t.ToString() );
+				btn.AddEventListener( "onclick", () =>
+				{
+					btn.AddClass( "active" );
+					SelectedTypeBtn?.RemoveClass( "active" );
+					SelectedTypeBtn = btn;
+					SelectedType = t;
+				} );
+
+				if( t == SelectedType )
+				{
+					btn.AddClass( "active" );
+					SelectedTypeBtn = btn;
+				}
+			}
 		}
 
 		void Select()
@@ -148,16 +176,34 @@ namespace WorldCraft
 				return;
 			}
 
-			PlaceServerside( bounds.Center, bounds.Size );
+			PlaceServerside( SelectedType, bounds.Center, bounds.Size );
 		}
 
 		[ServerCmd]
-		public static void PlaceServerside( Vector3 position, Vector3 size )
+		public static void PlaceServerside( PrimitiveType type, Vector3 position, Vector3 size )
 		{
 			var entity = new PrimitiveEntity();
 			entity.Position = position;
 
-			var primitive = new PrimitiveBox();
+			BasePrimitive primitive = null;
+
+			// bet we can do something better here
+			switch ( type )
+			{
+				case PrimitiveType.Box:
+					primitive = new PrimitiveBox();
+					break;
+				case PrimitiveType.Cylinder:
+					primitive = new PrimitiveCylinder();
+					break;
+			}
+
+			if ( primitive == null )
+			{
+				// eh
+				return;
+			}
+
 			primitive.Origin = position;
 			primitive.Size = size;
 			primitive.Entity = entity; // Circular dependency bad
