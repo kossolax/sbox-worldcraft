@@ -30,6 +30,7 @@ namespace WorldCraft
 		public Line ExtrudeLine;
 
 		Grid Grid;
+		float NextInputDelay;
 
 		static PrimitiveType SelectedType = PrimitiveType.Box;
 		static Panel SelectedTypeBtn;
@@ -45,6 +46,12 @@ namespace WorldCraft
 			// todo: need to delete grid when tool is deactivated
 			if ( !Grid.IsValid() )
 				Grid = new Grid();
+
+			if( NextInputDelay > 0 )
+			{
+				NextInputDelay -= Time.Delta;
+				return;
+			}
 
 			switch ( State )
 			{
@@ -106,7 +113,7 @@ namespace WorldCraft
 
 			Plane = new Plane( Start, trace.Normal );
 
-			if ( Input.Down( InputButton.Attack1 ) )
+			if ( Input.Pressed( InputButton.Attack1 ) )
 			{
 				Sound.FromScreen( "start" );
 				State = StateEnum.Drag;
@@ -130,6 +137,7 @@ namespace WorldCraft
 			{
 				Sound.FromScreen( "fail" );
 				State = StateEnum.Select;
+				NextInputDelay = .1f;
 				return;
 			}
 
@@ -150,6 +158,7 @@ namespace WorldCraft
 				Sound.FromScreen( "finish" );
 				State = StateEnum.Select;
 				FinalizeBuild();
+				NextInputDelay = .1f;
 			}
 		}
 
