@@ -26,19 +26,21 @@ namespace WorldCraft
 		public override void BuildMesh( Mesh mesh )
 		{
 			var height = Size.z / 2;
-			var diameter = Size.x; // todo: x, y size
+			//var diameter = Size.x; // todo: x, y size
 			int tesselation = 32; // todo: tesselation in tool options
 
 			var verts = new List<SimpleVertex>();
 			var indices = new List<int>();
-			var radius = diameter / 2;
+			//var radius = diameter / 2;
 
 			for ( int i = 0; i <= tesselation; i++ )
 			{
 				var normal = GetCircleVector( i, tesselation );
 				var texCoord = new Vector2((float)i / (float)tesselation, 0.0f);
 
-				var pos = normal * radius + Vector3.Up * height;
+				var pos = normal + Vector3.Up * height;
+				pos.x *= Size.x / 2;
+				pos.y *= Size.y / 2;
 				GetUvs( normal, out Vector3 u, out Vector3 v );
 
 				verts.Add( new SimpleVertex()
@@ -49,7 +51,9 @@ namespace WorldCraft
 					texcoord = texCoord // todo: texcoords for cylinder sides
 				} );
 
-				pos = normal * radius + Vector3.Down * height;
+				pos = normal + Vector3.Down * height;
+				pos.x *= Size.x / 2;
+				pos.y *= Size.y / 2;
 				texCoord.y = 1.0f;
 				verts.Add( new SimpleVertex()
 				{
@@ -71,8 +75,8 @@ namespace WorldCraft
 				indices.Add( i * 2 + 2 );
 			}
 
-			CreateCap( tesselation, height, radius, Vector3.Up, indices, verts );
-			CreateCap( tesselation, height, radius, Vector3.Down, indices, verts );
+			CreateCap( tesselation, height, Vector3.Up, indices, verts );
+			CreateCap( tesselation, height, Vector3.Down, indices, verts );
 
 			mesh.CreateVertexBuffer<SimpleVertex>( verts.Count, SimpleVertex.Layout, verts.ToArray() );
 			mesh.CreateIndexBuffer( indices.Count, indices.ToArray() );
@@ -89,7 +93,7 @@ namespace WorldCraft
 			return v.Normal;
 		}
 
-		public void CreateCap( int tesselation, float height, float radius, Vector3 normal, List<int> indices, List<SimpleVertex> verts )
+		public void CreateCap( int tesselation, float height, Vector3 normal, List<int> indices, List<SimpleVertex> verts )
 		{
 			// Create cap indices.
 			for ( int i = 0; i < tesselation - 2; i++ )
@@ -111,8 +115,10 @@ namespace WorldCraft
 			// Create cap vertices.
 			for ( int i = 0; i < tesselation; i++ )
 			{
-				var pos = GetCircleVector( i, tesselation ) * radius +
+				var pos = GetCircleVector( i, tesselation ) +
 								   normal * height;
+				pos.x *= Size.x / 2;
+				pos.y *= Size.y / 2;
 				GetUvs( normal, out Vector3 u, out Vector3 v );
 
 				verts.Add( new SimpleVertex()
