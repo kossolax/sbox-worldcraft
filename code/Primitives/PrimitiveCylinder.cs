@@ -41,7 +41,7 @@ namespace WorldCraft
 				var pos = normal + Vector3.Up * height;
 				pos.x *= Size.x / 2;
 				pos.y *= Size.y / 2;
-				GetUvs( normal, out Vector3 u, out Vector3 v );
+				GetTangentBinormal( normal, out Vector3 u, out Vector3 v );
 
 				verts.Add( new SimpleVertex()
 				{
@@ -82,18 +82,7 @@ namespace WorldCraft
 			mesh.CreateIndexBuffer( indices.Count, indices.ToArray() );
 		}
 
-		protected static Vector3 GetCircleVector( int i, int tessellation )
-		{
-			var angle = i * (float)Math.PI * 2 / tessellation;
-
-			var dx = (float)Math.Cos( angle );
-			var dy = (float)Math.Sin( angle );
-
-			var v = new Vector3( dx, dy, 0 );
-			return v.Normal;
-		}
-
-		public void CreateCap( int tesselation, float height, Vector3 normal, List<int> indices, List<SimpleVertex> verts )
+		private void CreateCap( int tesselation, float height, Vector3 normal, List<int> indices, List<SimpleVertex> verts )
 		{
 			// Create cap indices.
 			for ( int i = 0; i < tesselation - 2; i++ )
@@ -119,7 +108,7 @@ namespace WorldCraft
 								   normal * height;
 				pos.x *= Size.x / 2;
 				pos.y *= Size.y / 2;
-				GetUvs( normal, out Vector3 u, out Vector3 v );
+				GetTangentBinormal( normal, out Vector3 u, out Vector3 v );
 
 				verts.Add( new SimpleVertex()
 				{
@@ -131,19 +120,15 @@ namespace WorldCraft
 			}
 		}
 
-		private static void GetUvs( Vector3 normal, out Vector3 u, out Vector3 v )
+		private static Vector3 GetCircleVector( int i, int tessellation )
 		{
-			var t1 = Vector3.Cross( normal, Vector3.Forward );
-			var t2 = Vector3.Cross( normal, Vector3.Up );
-			if ( t1.Length > t2.Length )
-			{
-				u = t1;
-			}
-			else
-			{
-				u = t2;
-			}
-			v = Vector3.Cross( normal, u ).Normal;
+			var angle = i * (float)Math.PI * 2 / tessellation;
+
+			var dx = (float)Math.Cos( angle );
+			var dy = (float)Math.Sin( angle );
+
+			var v = new Vector3( dx, dy, 0 );
+			return v.Normal;
 		}
 
 	}

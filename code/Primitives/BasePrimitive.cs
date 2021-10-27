@@ -28,5 +28,21 @@ namespace WorldCraft
 				y = Vector3.Dot( vAxis, pos )
 			};
 		}
+
+		protected static void GetTangentBinormal( Vector3 normal, out Vector3 tangent, out Vector3 binormal )
+		{
+			var t1 = Vector3.Cross( normal, Vector3.Forward );
+			var t2 = Vector3.Cross( normal, Vector3.Up );
+			if ( t1.Length > t2.Length )
+			{
+				tangent = t1;
+			}
+			else
+			{
+				tangent = t2;
+			}
+			binormal = Vector3.Cross( normal, tangent ).Normal;
+		}
+
 	}
 }

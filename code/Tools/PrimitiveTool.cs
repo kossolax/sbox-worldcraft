@@ -18,7 +18,8 @@ namespace WorldCraft
 		public enum PrimitiveType
 		{
 			Box,
-			Cylinder
+			Cylinder,
+			Sphere
 		}
 
 		public StateEnum State = StateEnum.Select;
@@ -195,6 +196,9 @@ namespace WorldCraft
 					break;
 				case PrimitiveType.Cylinder:
 					primitive = new PrimitiveCylinder();
+					break;
+				case PrimitiveType.Sphere:
+					primitive = new PrimitiveSphere();
 					break;
 			}
 
