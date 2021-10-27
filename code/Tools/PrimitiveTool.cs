@@ -173,6 +173,7 @@ namespace WorldCraft
 			if ( State == StateEnum.Extrude )
 			{
 				DebugOverlay.Line( ExtrudeLine.a, ExtrudeLine.b, Color.Red );
+				DebugOverlay.Text( ExtrudeLine.a.WithZ( Start.z + bounds.Size.z ), $"Z: { bounds.Size.z }", Color.Yellow, 0, 5000 );
 			}
 		}
 
