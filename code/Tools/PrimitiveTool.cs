@@ -157,7 +157,7 @@ namespace WorldCraft
 		{
 			var bounds = new BBox( Vector3.Min( Start, End ), Vector3.Max( Start, End ) );
 
-			DebugOverlay.Box( Start, End, Color.Yellow );
+			DebugOverlay.Box( Start, End, Color.Yellow, 0, false );
 			DebugOverlay.Text( bounds.Center + Vector3.OneY * bounds.Size.y / 2, $"X: { bounds.Size.x }", Color.Yellow, 0, 5000 );
 			DebugOverlay.Text( bounds.Center + Vector3.OneX * bounds.Size.x / 2, $"Y: { bounds.Size.y }", Color.Yellow, 0, 5000 );
 
