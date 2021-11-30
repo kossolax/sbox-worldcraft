@@ -21,7 +21,7 @@ namespace WorldCraft
 			var client = entity.Client;
 
 			NameLabel = Add.Label( $"{client.Name}" );
-			Avatar = Add.Image( $"avatar:{client.SteamId}" );
+			Avatar = Add.Image( $"avatar:{client.PlayerId}" );
 		}
 
 		public virtual void UpdateFromPlayer( Entity entity )

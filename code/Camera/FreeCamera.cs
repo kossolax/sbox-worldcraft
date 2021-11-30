@@ -12,8 +12,8 @@ namespace WorldCraft
 
 		public override void Update()
 		{
-			Pos += MoveInput.Normal * 300 * RealTime.Delta * Rot * MoveSpeed;
-			Rot = Rotation.From( LookAngles );
+			Position += MoveInput.Normal * 300 * RealTime.Delta * Rotation * MoveSpeed;
+			Rotation = Rotation.From( LookAngles );
 			FieldOfView = 80;
 			Viewer = Local.Pawn;
 
@@ -43,7 +43,7 @@ namespace WorldCraft
 			if ( input.Down( InputButton.Duck ) ) MoveSpeed = 0.2f;
 
 			input.ViewAngles = LookAngles;
-			input.Position = Pos;
+			input.Position = Position;
 
 			// input.ClearButtons();
 			input.StopProcessing = true;
@@ -57,7 +57,7 @@ namespace WorldCraft
 			var cameraView = 2.0f * (float)Math.Tan( 0.5f * 0.017453292f * FieldOfView );
 			var distance = focusDist * maxSize / cameraView; 
 			distance += 0.5f * maxSize;
-			Pos = bb.Center - distance * Rot.Forward;
+			Position = bb.Center - distance * Rotation.Forward;
 		}
 
 	}

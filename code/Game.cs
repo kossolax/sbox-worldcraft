@@ -48,7 +48,7 @@ namespace WorldCraft
 		public override void ClientJoined( Client cl )
 		{
 			Log.Info( $"\"{cl.Name}\" has joined the game" );
-			ChatBox.AddInformation( To.Everyone, $"{cl.Name} has joined", $"avatar:{cl.SteamId}" );
+			ChatBox.AddInformation( To.Everyone, $"{cl.Name} has joined", $"avatar:{cl.PlayerId}" );
 
 			cl.Pawn = new EditorPawn();
 		}
@@ -56,7 +56,7 @@ namespace WorldCraft
 		public override void ClientDisconnect( Client cl, NetworkDisconnectionReason reason )
 		{
 			Log.Info( $"\"{cl.Name}\" has left the game ({reason})" );
-			ChatBox.AddInformation( To.Everyone, $"{cl.Name} has left ({reason})", $"avatar:{cl.SteamId}" );
+			ChatBox.AddInformation( To.Everyone, $"{cl.Name} has left ({reason})", $"avatar:{cl.PlayerId}" );
 
 			if ( cl.Pawn.IsValid() )
 			{
@@ -97,9 +97,9 @@ namespace WorldCraft
 			return camSetup;
 		}
 
-		public override void OnVoicePlayed( ulong steamId, float level )
+		public override void OnVoicePlayed( long playerId, float level )
 		{
-			VoiceList.Current?.OnVoicePlayed( steamId, level );
+			VoiceList.Current?.OnVoicePlayed( playerId, level );
 		}
 
 		/// <summary>
