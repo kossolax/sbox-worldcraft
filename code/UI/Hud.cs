@@ -22,7 +22,7 @@ namespace WorldCraft
 		{
 			base.Tick();
 
-			Text = Input.GetKeyWithBinding( Binding ).ToUpper();
+			Text = Input.GetKeyWithBinding( Binding )?.ToUpper() ?? "UNSET";
 		}
 	}
 
