@@ -28,8 +28,10 @@ namespace WorldCraft
 			Model model = Primitive?.BuildModel();
 
 			SetModel( model );
-			SetupPhysicsFromModel( PhysicsMotionType.Static );
+			SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
+			// SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 			EnableAllCollisions = true;
+			PhysicsEnabled = true;
 		}
 	}
 }
